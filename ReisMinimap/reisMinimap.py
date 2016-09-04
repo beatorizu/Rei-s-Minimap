@@ -5,7 +5,6 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.basemap import interp, Basemap
 from numpy import meshgrid
 from numpy.ma import MaskedArray
-import seaborn as sns
 
 
 class Minimap:
