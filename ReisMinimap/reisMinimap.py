@@ -17,7 +17,6 @@ class Minimap:
                                resolution='l', fix_aspect=False)
         self.x, self.y = self.basemap(*meshgrid(lon, lat))
 
-
     def maskData(self, data, mlon, mlat, mask=None):
         """
         This function apply a mask to a data array
@@ -36,9 +35,9 @@ class Minimap:
         result = interp(data, self.x, self.y, mask_x, mask_y)
         return MaskedArray(result, mask=mask)
 
-    def renderMap(self, shape=[], bounds=[0, 7, 42], cmap=None, norm=None, extend='both', name='NOME'):
+    def renderMap(self, data, shape=[], bounds=[0, 7, 42], cmap=None, norm=None, extend='both', name='NOME'):
         plt.clf()
-        self.basemap.contourf(self.x2, self.y2, self.masked_var, bounds, cmap=cmap, norm=norm, extend=extend)
+        self.basemap.contourf(self.x, self.y, data, bounds, cmap=cmap, norm=norm, extend=extend)
         for s in shape:
             self.basemap.readshapefile(s, name)
         self.basemap.colorbar(location='bottom')
