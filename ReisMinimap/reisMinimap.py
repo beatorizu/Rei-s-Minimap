@@ -1,4 +1,5 @@
 from matplotlib import use
+
 use('Agg')
 import matplotlib.pyplot as plt
 from mpl_toolkits.basemap import interp, Basemap
@@ -8,7 +9,6 @@ import seaborn as sns
 
 
 class Minimap:
-
     def __init__(self, lon, lat, mlon, mlat, urcrnrlat=None, urcrnrlon=None, llcrnrlat=None, llcrnrlon=None):
         self.lon = lon
         self.lat = lat
@@ -39,12 +39,13 @@ class Minimap:
         result = interp(data, self.x, self.y, self.x2, self.y2)
         self.masked_var = MaskedArray(result, mask=mask)
 
-    def renderMap(self, waypoint, shape=[], bounds=[0, 7, 42], cmap=None, norm=None, extend='both', name='NOME',
-                  transparent=False):
+    def renderMap(self, shape=[], bounds=[0, 7, 42], cmap=None, norm=None, extend='both', name='NOME'):
         plt.clf()
         self.basemap.contourf(self.x2, self.y2, self.masked_var, bounds, cmap=cmap, norm=norm, extend=extend)
         for s in shape:
             self.basemap.readshapefile(s, name)
         self.basemap.colorbar(location='bottom')
         self.basemap.imshow(self.masked_var)
-        plt.savefig(waypoint, transparent=transparent, dpi=200, bbox_inches='tight', pad_inches=0.1)
+
+    def saveMap(self, waypoint, transparent=False):
+        plt.savefig(waypoint, transparent=transparent, bbox_inches='tight', pad_inches=0.1)
