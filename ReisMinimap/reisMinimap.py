@@ -9,15 +9,15 @@ import seaborn as sns
 
 class Minimap:
 
-    def __init__(self, lon, lat, mlon, mlat):
+    def __init__(self, lon, lat, mlon, mlat, urcrnrlat=None, urcrnrlon=None, llcrnrlat=None, llcrnrlon=None):
         self.lon = lon
         self.lat = lat
         self.mlon = mlon
         self.mlat = mlat
-        self.basemap = Basemap(urcrnrlat=mlat.max(),
-                               urcrnrlon=mlon.max(),
-                               llcrnrlat=mlat.min(),
-                               llcrnrlon=mlon.min(),
+        self.basemap = Basemap(urcrnrlat=urcrnrlat,
+                               urcrnrlon=urcrnrlon,
+                               llcrnrlat=llcrnrlat,
+                               llcrnrlon=llcrnrlon,
                                resolution='l')
         self.x, self.y = self.basemap(lon, lat)
         self.x2, self.y2 = self.basemap(*meshgrid(mlon, mlat))
