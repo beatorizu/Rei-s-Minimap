@@ -16,7 +16,7 @@ class Minimap:
                                resolution='l', fix_aspect=False)
         self.x, self.y = self.basemap(*meshgrid(lon, lat))
 
-    def maskData(self, data, mlon, mlat, mask=None):
+    def maskData(self, data, lon, lat, mlon, mlat, mask=None):
         """
         This function apply a mask to a data array
 
@@ -30,17 +30,18 @@ class Minimap:
             None
 
         """
-        mask_x, mask_y = self.basemap(*meshgrid(mlon, mlat))
-        result = interp(data, self.x, self.y, mask_x, mask_y)
+        self.x, self.y = self.basemap(*meshgrid(mlon, mlat))
+        result = interp(data, lon, lat, self.x, self.y)
         return MaskedArray(result, mask=mask)
 
     def renderMap(self, data, shape=[], bounds=[0, 7, 42], cmap=None, norm=None, extend='both', name='NOME'):
         plt.clf()
+        # TODO: Add flag or use Interfaces
+        self.basemap.bluemarble()
         self.basemap.contourf(self.x, self.y, data, bounds, cmap=cmap, norm=norm, extend=extend)
         for s in shape:
-            self.basemap.readshapefile(s, name)
-        self.basemap.colorbar(location='bottom')
-        self.basemap.imshow(self.masked_var)
+            self.basemap.readshapefile(s, name, linewidth=0.25)
+        # self.basemap.colorbar(location='bottom')
 
     def saveMap(self, waypoint, transparent=False):
-        plt.savefig(waypoint, transparent=transparent, bbox_inches='tight', pad_inches=0.1)
+        plt.savefig(waypoint, transparent=transparent, bbox_inches='tight', pad_inches=0)
